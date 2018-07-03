@@ -1,7 +1,19 @@
 "use strict"
 $(document).ready(main);
 
+var todos = [
+  {
+    id: 1,
+    body: "stuff"
+  },
+  {
+    id: 2,
+    body: "things"
+  }
+];
+
 function main() {
+  initData();
   submit();
 }
 
@@ -12,7 +24,7 @@ function main() {
 function submit() {
   var counter = $('.table').find('tr').length;
 
-  $('form').on('submit', function(event) {
+  $('form').on('submit', function (event) {
     event.preventDefault();
 
     var submission = $('#thingToDo').val();
@@ -25,19 +37,10 @@ function submit() {
 
     $tr.append($th, $td, $delete, $check);
     $('.table').find('tbody').append($tr);
-
-    // set the on change event
-    $check.change(strikeThrough);
-    $delete.on('click', function() {
-      deleteItem(this);
-      if (counter == 1) {
-        return false;
-      }
-
-      $(this).closest('tr').fadeOut().remove();
-      counter--;
-      updatedCounter();
-    });
+    alterations($check, $delete);
+    updatedCounter();
+    todos.push({id: counter, body: text});
+    saveTodoList();
   });
 }
 
@@ -75,11 +78,60 @@ function deleteItem(clickedOnElement) {
   Updates the counter to the number of items in the list after removing an item
 */
 function updatedCounter() {
-    var counter = $('.table').find('tr').length;
-$($('#myTable').children().get()
-  .reverse())
-  .each(function() {
-    counter--;
-    $(this).children(':first-child').text(counter)
+
+  var counter = $('.table').find('tr').length;
+  $($('#myTable').children().get()
+    .reverse())
+    .each(function () {
+      counter--;
+      $(this).children(':first-child').text(counter)
+    });
+}
+
+/*
+    INIT DATA
+  Stores the todo-list in local memory
+*/
+function initData() {
+  let todos = JSON.parse(localStorage.getItem('todos')) || [];
+  let $todoRows = todos.map(function (todo) {
+    var $tr = $('<tr>');
+    var $th = $('<th>').text(todo.id);
+    var $td = $('<td>').text(todo.body);
+    var $delete = $(`<td><button data-row-id="${todo.id}" class="btn btn-link">Delete</button></td>`);
+    var $check = $(`<td><input id="check" type="checkbox" unchecked="true"></td>`);
+
+    alterations($check, $delete);
+    return $($tr.append($th, $td, $delete, $check).get().reverse()).each(function () {
+      todo.id;
+      $(this).children(':first-child').text(todo.id)
+    });
   });
+
+  $('.table').find('tbody').append($todoRows);
+
+  console.log(todos);
+}
+
+/*
+    ALTERATIONS
+  Changes the todo list with strikethroughs and deletes
+*/
+function alterations($check, $delete) {
+
+  var counter = $('.table').find('tr').length;
+
+  $check.change(strikeThrough);
+  $delete.on('click', function () {
+
+    deleteItem(this);
+
+    $(this).closest('tr').fadeOut().remove();
+    counter--;
+    updatedCounter();
+  });
+}
+
+function saveTodoList() {
+  localStorage.setItem('todos', JSON.stringify(todos));
 }
