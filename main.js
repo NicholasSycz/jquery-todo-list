@@ -36,7 +36,7 @@ function submit() {
 
       $(this).closest('tr').fadeOut().remove();
       counter--;
-      thing();
+      updatedCounter();
     });
   });
 }
@@ -70,7 +70,11 @@ function deleteItem(clickedOnElement) {
   $(clickedOnElement).closest('tr').remove();
 }
 
-function thing() {
+/*
+    UPDATE COUNTER
+  Updates the counter to the number of items in the list after removing an item
+*/
+function updatedCounter() {
     var counter = $('.table').find('tr').length;
 $($('#myTable').children().get()
   .reverse())
