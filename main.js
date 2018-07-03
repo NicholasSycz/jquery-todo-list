@@ -75,7 +75,6 @@ function thing() {
 $($('#myTable').children().get()
   .reverse())
   .each(function() {
-    console.log(this);
     counter--;
     $(this).children(':first-child').text(counter)
   });
