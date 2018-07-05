@@ -1,16 +1,7 @@
 "use strict"
 $(document).ready(main);
 
-var todos = [
-  {
-    id: 1,
-    body: "stuff"
-  },
-  {
-    id: 2,
-    body: "things"
-  }
-];
+var todos = [];
 
 function main() {
   initData();
