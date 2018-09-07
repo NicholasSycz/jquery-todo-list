@@ -9,7 +9,7 @@ var todos = [];
  * This function is passed into the doc ready
  */
 function main() {
-  // initData();
+  initData();
   getTodos();
   submit();
 }
